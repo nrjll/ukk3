@@ -17,7 +17,9 @@ class PklResource extends Resource
 {
     protected static ?string $model = Pkl::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard';
+    protected static ?string $navigationLabel = 'Data PKL';
+
 
     public static function form(Form $form): Form
     {

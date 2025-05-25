@@ -17,7 +17,10 @@ class SiswaResource extends Resource
 {
     protected static ?string $model = Siswa::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationGroup = 'User Management';
+    protected static ?string $navigationLabel = 'Data Siswa';
+
 
     public static function form(Form $form): Form
     {
