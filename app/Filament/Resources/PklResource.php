@@ -26,11 +26,7 @@ class PklResource extends Resource
                 Forms\Components\Select::make('siswa_id')
                     ->label('Nama Siswa')
                     ->relationship('siswa', 'nama')
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->disabled(),
-                
+                    ->required(),
                 Forms\Components\Select::make('industri_id')
                     ->label('Nama Industri')
                     ->relationship('industri', 'nama')
@@ -39,7 +35,6 @@ class PklResource extends Resource
                     ->label('Guru Pembimbing')
                     ->relationship('guru', 'nama')
                     ->required(),    
-                
                 Forms\Components\DatePicker::make('mulai')
                     ->required(),
                 Forms\Components\DatePicker::make('selesai')
@@ -91,6 +86,26 @@ class PklResource extends Resource
                 ]),
             ]);
     }
+
+    public static function afterCreate($record): void
+    {
+        $siswa = $record->siswa;
+        if ($siswa) {
+            $siswa->status_lapor_pkl = 1;
+            $siswa->save();
+        }
+    }
+
+    public static function afterUpdate($record): void
+    {
+        $siswa = $record->siswa;
+        if ($siswa) {
+            $siswa->status_lapor_pkl = 1;
+            $siswa->save();
+        }
+    }
+
+
 
     public static function getRelations(): array
     {
