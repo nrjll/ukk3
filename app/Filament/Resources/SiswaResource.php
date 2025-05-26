@@ -61,18 +61,25 @@ class SiswaResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nis')
+                    ->label('NIS')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('gender')
                     ->label('Gender')
                     ->formatStateUsing(fn ($state) => $state === 'L' ? 'L' : 'P'),
                 Tables\Columns\TextColumn::make('kontak')
+                    ->label('Kontak')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status_lapor_pkl')
-                    ->boolean(),
+                    ->label('Status Lapor PKL')
+                    ->boolean()
+                    ->icon(fn ($state) => $state ? 'heroicon-o-face-smile' : 'heroicon-o-face-frown')
+                    ->color(fn ($state) => $state ? 'success' : 'danger'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -87,6 +94,7 @@ class SiswaResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

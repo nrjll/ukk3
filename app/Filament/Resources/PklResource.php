@@ -18,7 +18,7 @@ class PklResource extends Resource
     protected static ?string $model = Pkl::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard';
-    protected static ?string $navigationLabel = 'Data PKL';
+    protected static ?string $navigationLabel = 'Data Lapor PKL';
 
 
     public static function form(Form $form): Form
@@ -62,11 +62,10 @@ class PklResource extends Resource
                 Tables\Columns\TextColumn::make('selesai')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('durasi')
-                    ->label('Durasi (Hari)')
-                    ->sortable()
-                    ->alignment('center'),
-
+                // Tables\Columns\TextColumn::make('durasi')
+                //     ->label('Durasi (Hari)')
+                //     ->sortable()
+                //     ->alignment('center'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -81,6 +80,7 @@ class PklResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

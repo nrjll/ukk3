@@ -23,7 +23,7 @@ class SiswaSeeder extends Seeder
                 'email' => 'makinamikayumi@gmail.com',
                 'status_lapor_pkl'=> false,
             ],
-                        [
+            [
                 'nama' => 'NUR RIJALUL ANNAM', 
                 'nis' => '20440',
                 'gender' => 'L',
