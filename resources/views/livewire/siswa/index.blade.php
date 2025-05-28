@@ -14,8 +14,10 @@
                         <tr>
                             <th class="border px-4 py-2">No</th>
                             <th class="border px-4 py-2">Nama</th>
+                            <th class="border px-4 py-2">Gender</th>
                             <th class="border px-4 py-2">NIS</th>
                             <th class="border px-4 py-2">Email</th>
+                            <th class="border px-4 py-2">Kontak</th>
                             <th class="border px-4 py-2">Status Lapor PKL</th>
                         </tr>
                     </thead>
@@ -24,8 +26,10 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $index + 1 }}</td>
                                 <td class="border px-4 py-2">{{ $siswa->nama }}</td>
+                                <td class="border px-4 py-2">{{ $siswa->gender }}</td>
                                 <td class="border px-4 py-2">{{ $siswa->nis }}</td>
                                 <td class="border px-4 py-2">{{ $siswa->email }}</td>
+                                <td class="border px-4 py-2">{{ $siswa->kontak }}</td>
                                 <td class="border px-4 py-2">{{ $siswa->status_lapor_pkl }}</td>
                             </tr>
                         @empty
