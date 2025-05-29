@@ -8,7 +8,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow sm:rounded-lg p-6">
                 <h3 class="text-lg font-bold mb-4">Data PKL</h3>
-
+                <a href="{{ route('livewire.pkl.create') }}" class="mb-4 inline-block bg-green-600 text-white px-4 py-2 rounded">
+                    Tambah PKL
+                </a>
                 <table class="table-auto w-full border border-gray-300">
                     <thead class="bg-gray-100">
                         <tr>
@@ -24,11 +26,11 @@
                         @forelse ($pkls as $index => $pkl)
                             <tr>
                                 <td class="border px-4 py-2">{{ $index + 1 }}</td>
-                                <td class="border px-4 py-2">{{ $pkl->siswa_id }}</td>
-                                <td class="border px-4 py-2">{{ $pkl->guru_id }}</td>
-                                <td class="border px-4 py-2">{{ $pkl->industri_id }}</td>
-                                <td class="border px-4 py-2">{{ $pkl->mulai }}</td>
-                                <td class="border px-4 py-2">{{ $pkl->selesai }}</td>
+                                <td class="border px-4 py-2">{{ $pkl->siswa?->nama ?? '-' }}</td>
+                                <td class="border px-4 py-2">{{ $pkl->guru?->nama ?? '-' }}</td>
+                                <td class="border px-4 py-2">{{ $pkl->industri?->nama ?? '-' }}</td>
+                                <td class="border px-4 py-2">{{ $pkl->mulai->format('d-m-Y') }}</td>
+                                <td class="border px-4 py-2">{{ $pkl->selesai->format('d-m-Y') }}</td>
                             </tr>
                         @empty
                             <tr>
