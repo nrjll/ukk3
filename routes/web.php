@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Siswa\Index;
+use App\Livewire\Guru\Index as GuruIndex;
+use App\Livewire\Pkl\Index as PklIndex;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,4 +19,6 @@ Route::middleware([
     })->name('dashboard');
     
     Route::get('/siswa', Index::class)->name('livewire.siswa.index');
+    Route::get('/guru', GuruIndex::class)->name('livewire.guru.index');
+    Route::get('/pkl', PklIndex::class)->name('livewire.pkl.index');
 });
