@@ -31,6 +31,11 @@
                         {{ __('Lapor PKL') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('livewire.industri.index') }}" :active="request()->routeIs('livewire.industri.index')">
+                        {{ __('Data Industri') }}
+                    </x-nav-link>
+                </div>
 
             </div>
 

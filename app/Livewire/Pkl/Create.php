@@ -7,7 +7,7 @@ use App\Models\Pkl;
 use App\Models\Guru;
 use App\Models\Industri;
 use App\Models\Siswa;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 
 class Create extends Component
 {

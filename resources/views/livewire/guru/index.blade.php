@@ -25,7 +25,7 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $index + 1 }}</td>
                                 <td class="border px-4 py-2">{{ $guru->nama }}</td>
-                                <td class="border px-4 py-2">{{ $guru->gender }}</td>
+                                <td class="border px-4 py-2 text-center">{{ $guru->gender }}</td>
                                 <td class="border px-4 py-2">{{ $guru->nip }}</td>
                                 <td class="border px-4 py-2">{{ $guru->email }}</td>
                                 <td class="border px-4 py-2">{{ $guru->kontak }}</td>

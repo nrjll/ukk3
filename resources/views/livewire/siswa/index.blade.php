@@ -26,11 +26,18 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $index + 1 }}</td>
                                 <td class="border px-4 py-2">{{ $siswa->nama }}</td>
-                                <td class="border px-4 py-2">{{ $siswa->gender }}</td>
+                                <td class="border px-4 py-2 text-center">{{ $siswa->gender }}</td>
                                 <td class="border px-4 py-2">{{ $siswa->nis }}</td>
                                 <td class="border px-4 py-2">{{ $siswa->email }}</td>
                                 <td class="border px-4 py-2">{{ $siswa->kontak }}</td>
-                                <td class="border px-4 py-2">{{ $siswa->status_lapor_pkl }}</td>
+                                <td class="border px-4 py-2 text-center">
+                                    {{-- Status Lapor PKL --}}
+                                    @if ($siswa->status_lapor_pkl)
+                                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">Sudah</span>
+                                    @else
+                                        <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm">Belum</span>
+                                    @endif
+                                </td>
                             </tr>
                         @empty
                             <tr>
