@@ -11,27 +11,13 @@ use App\Http\Controllers\Api\PklController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-
 // API Routes untuk CRUD
-Route::prefix('v1')->group(function () {
-    
-    // User Routes
-    Route::apiResource('users', UserController::class);
-    
-    // Siswa Routes
-    Route::apiResource('siswa', SiswaController::class);
-    
-    // Guru Routes
-    Route::apiResource('guru', GuruController::class);
-    
-    // Industri Routes
-    Route::apiResource('industri', IndustriController::class);
-    
-    // PKL Routes
-    Route::apiResource('pkl', PklController::class);
-    
-    // Additional routes for relationships
-    Route::get('siswa/{id}/pkl', [SiswaController::class, 'pkl']);
-    Route::get('guru/{id}/pkl', [GuruController::class, 'pkl']);
-    Route::get('industri/{id}/pkl', [IndustriController::class, 'pkl']);
-});
+Route::apiResource('users', UserController::class);
+Route::apiResource('siswa', SiswaController::class);
+Route::apiResource('guru', GuruController::class);
+Route::apiResource('industri', IndustriController::class);
+Route::apiResource('pkl', PklController::class);
+// Additional routes for relationships
+Route::get('siswa/{id}/pkl', [SiswaController::class, 'pkl']);
+Route::get('guru/{id}/pkl', [GuruController::class, 'pkl']);
+Route::get('industri/{id}/pkl', [IndustriController::class, 'pkl']);
