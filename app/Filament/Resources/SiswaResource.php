@@ -44,7 +44,24 @@ class SiswaResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('kontak')
                     ->required()
-                    ->maxLength(16),
+                    ->maxLength(16)
+                    ->afterStateHydrated(function (Forms\Components\TextInput $component, $state) {
+                        if ($state && str_starts_with($state, '0')) {
+                            $component->state('+62' . substr($state, 1));
+                        } elseif ($state && !str_starts_with($state, '+62')) {
+                            $component->state('+62' . ltrim($state, '+'));
+                        }
+                    })
+                    ->dehydrateStateUsing(function ($state) {
+                    $state = trim($state);
+                    if (str_starts_with($state, '0')) {
+                        return '+62' . substr($state, 1);
+                    } elseif (!str_starts_with($state, '+62')) {
+                        return '+62' . ltrim($state, '+');
+                    }
+                    return $state;
+                    })
+                    ->helperText('Format: +62XXXXXXXXXX'),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
