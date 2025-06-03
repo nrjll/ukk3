@@ -13,7 +13,7 @@ class SiswaSeeder extends Seeder
      */
     public function run(): void
     {
-        $siswa = Siswa::insert([
+        $siswas = Siswa::insert([
             [
                 'nama' => 'ABU BAKAR TSABIT GHUFRON', 
                 'nis' => '20388',
@@ -88,7 +88,7 @@ class SiswaSeeder extends Seeder
             ],
             [
                 'nama' => 'GABRIEL POSSENTI GENTA BAHANA NAGARI', 
-                'nis' => '20410',
+                'nis' => '20411',
                 'gender' => 'L',
                 'alamat' => 'Sleman',
                 'kontak' => '089634085990',
