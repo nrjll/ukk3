@@ -29,7 +29,13 @@ class CreateNewUser implements CreatesNewUsers
                 'string', 
                 'email', 
                 'max:255', 
-                'unique:users'
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    $siswa = Siswa::where('email', $value)->first();
+                    if (!$siswa) {
+                        $fail('Email tidak terdaftar sebagai siswa.');
+                    }
+                },
             ],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
@@ -42,13 +48,9 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
         ]);
 
-        // Cek apakah email ada di table siswa
-        $siswa = Siswa::where('email', $input['email'])->first();
-        if ($siswa) {
-            // Pastikan role 'siswa' ada
-            $siswaRole = Role::firstOrCreate(['name' => 'siswa']);
-            $user->assignRole('siswa');
-        }
+        // Assign role siswa (karena sudah dipastikan email ada di table siswa)
+        $siswaRole = Role::firstOrCreate(['name' => 'siswa']);
+        $user->assignRole('siswa');
 
         return $user;
     }
