@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class UserController extends BaseApiController
 {
@@ -38,6 +40,12 @@ class UserController extends BaseApiController
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        // Cek apakah email ada di tabel siswa
+        $this->assignSiswaRoleIfExists($user, $request->email);
+
+        // Load ulang user dengan roles untuk response
+        $user->load('roles');
 
         return $this->sendResponse($user, 'User created successfully.', 201);
     }
@@ -77,6 +85,8 @@ class UserController extends BaseApiController
             return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
+        $oldEmail = $user->email;
+        
         $user->name = $request->name ?? $user->name;
         $user->email = $request->email ?? $user->email;
         
@@ -85,6 +95,14 @@ class UserController extends BaseApiController
         }
 
         $user->save();
+
+        // Jika email berubah, cek apakah email baru ada di tabel siswa
+        if ($request->email && $request->email !== $oldEmail) {
+            $this->assignSiswaRoleIfExists($user, $request->email);
+        }
+
+        // Load ulang user dengan roles untuk response
+        $user->load('roles');
 
         return $this->sendResponse($user, 'User updated successfully.');
     }
@@ -103,5 +121,24 @@ class UserController extends BaseApiController
         $user->delete();
 
         return $this->sendResponse([], 'User deleted successfully.');
+    }
+
+    /**
+     * Assign role siswa jika email ada di tabel siswa
+     */
+    private function assignSiswaRoleIfExists(User $user, string $email)
+    {
+        // Cek apakah email ada di tabel siswa
+        $siswa = Siswa::where('email', $email)->first();
+        
+        if ($siswa) {
+            // Pastikan role 'siswa' ada
+            $siswaRole = Role::firstOrCreate(['name' => 'siswa']);
+            
+            // Assign role siswa ke user jika belum punya
+            if (!$user->hasRole('siswa')) {
+                $user->assignRole('siswa');
+            }
+        }
     }
 }
