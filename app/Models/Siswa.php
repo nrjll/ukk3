@@ -22,4 +22,18 @@ class Siswa extends Model
     {
         return $this->hasOne(User::class, 'email', 'email');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($siswa) {
+            if ($siswa->isDirty('email')) {
+                $oldEmail = $siswa->getOriginal('email');
+                $newEmail = $siswa->email;
+
+                User::where('email', $oldEmail)->update(['email' => $newEmail]);
+            }
+        });
+    }
 }

@@ -66,4 +66,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function siswa()
+    {
+        return $this->hasOne(Siswa::class, 'email', 'email');
+    }
+
+    protected static function boot() 
+    {
+        parent::boot();
+
+        static::updating(function ($user){
+            if ($user->isDirty('email')) {
+                $oldEmail = $user->getOriginal('email');
+                $newEmail = $user->email;
+
+                Siswa::where('email', $oldEmail)->update(['email' => $newEmail]);
+            }
+        });
+    }
 }
