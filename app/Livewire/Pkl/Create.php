@@ -7,7 +7,8 @@ use App\Models\Pkl;
 use App\Models\Guru;
 use App\Models\Industri;
 use App\Models\Siswa;
-// use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Carbon\Carbon;
 
 class Create extends Component
 {
@@ -24,7 +25,7 @@ class Create extends Component
         'mulai' => 'required|date',
         'selesai' => 'required|date|after_or_equal:mulai',
     ];
-    
+
     public function mount()
     {  
         $this->gurus = Guru::all();
@@ -35,6 +36,15 @@ class Create extends Component
     public function submit()
     {
         $this->validate();
+
+        $mulai = Carbon::parse($this->mulai);
+        $selesai = Carbon::parse($this->selesai);
+
+        if ($mulai->diffInDays($selesai) < 90) {
+            throw ValidationException::withMessages([
+                'selesai' => 'Durasi PKL minimal harus 90 hari.',
+            ]);
+        }
 
         Pkl::create([
             'guru_id' => $this->guru_id,

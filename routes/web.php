@@ -21,10 +21,28 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
     
-    Route::get('/siswa', Index::class)->name('livewire.siswa.index');
-    Route::get('/guru', GuruIndex::class)->name('livewire.guru.index');
-    Route::get('/pkl', PklIndex::class)->name('livewire.pkl.index');
-    Route::get('/pkl/create', PklCreate::class)->name('livewire.pkl.create');
-    Route::get('/industri', IndustriIndex::class)->name('livewire.industri.index');
-    Route::get('/industri/create', IndustriCreate::class)->name('livewire.industri.create');
+    Route::middleware(['auth', 'role:guru'])->group(function () {
+        Route::get('/siswa', Index::class)->name('livewire.siswa.index');
+    });
+    Route::middleware(['auth', 'role:guru'])->group(function () {
+        Route::get('/guru', GuruIndex::class)->name('livewire.guru.index');
+    });
+    Route::middleware(['auth', 'role:siswa'])->group(function () {
+        Route::get('/pkl', PklIndex::class)->name('livewire.pkl.index');
+    });
+    Route::middleware(['auth', 'role:siswa'])->group(function () {
+        Route::get('/pkl/create', PklCreate::class)->name('livewire.pkl.create');
+    });
+    Route::middleware(['auth', 'role:siswa'])->group(function () {
+        Route::get('/industri', IndustriIndex::class)->name('livewire.industri.index');
+    });
+    Route::middleware(['auth', 'role:siswa'])->group(function () {
+        Route::get('/industri/create', IndustriCreate::class)->name('livewire.industri.create');
+    });
+
+    // Route::get('/siswa', Index::class)->name('livewire.siswa.index');
+    // Route::get('/guru', GuruIndex::class)->name('livewire.guru.index');
+    // Route::get('/pkl/create', PklCreate::class)->name('livewire.pkl.create');
+    // Route::get('/industri', IndustriIndex::class)->name('livewire.industri.index');
+    // Route::get('/industri/create', IndustriCreate::class)->name('livewire.industri.create');
 });

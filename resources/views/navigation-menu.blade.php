@@ -11,31 +11,41 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('livewire.siswa.index') }}" :active="request()->routeIs('livewire.siswa.index')">
-                        {{ __('Siswa SIJA') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('livewire.guru.index') }}" :active="request()->routeIs('livewire.guru.index')">
-                        {{ __('Guru SIJA') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('livewire.pkl.index') }}" :active="request()->routeIs('livewire.pkl.index')">
-                        {{ __('Lapor PKL') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('livewire.industri.index') }}" :active="request()->routeIs('livewire.industri.index')">
-                        {{ __('Data Industri') }}
-                    </x-nav-link>
-                </div>
+                @if (Auth::user()->hasRole('guru') || Auth::user()->hasRole('siswa'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+                @if (Auth::user()->hasRole('guru'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('livewire.siswa.index') }}" :active="request()->routeIs('livewire.siswa.index')">
+                            {{ __('Siswa SIJA') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+                @if (Auth::user()->hasRole('guru'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('livewire.guru.index') }}" :active="request()->routeIs('livewire.guru.index')">
+                            {{ __('Guru SIJA') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+                @if (Auth::user()->hasRole('siswa'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('livewire.pkl.index') }}" :active="request()->routeIs('livewire.pkl.index')">
+                            {{ __('Lapor PKL') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+                @if (Auth::user()->hasRole('siswa'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('livewire.industri.index') }}" :active="request()->routeIs('livewire.industri.index')">
+                            {{ __('Data Industri') }}
+                        </x-nav-link>
+                    </div>
+                @endif
 
             </div>
 

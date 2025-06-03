@@ -20,6 +20,7 @@
                             <th class="border px-4 py-2">Indsutri</th>
                             <th class="border px-4 py-2">Mulai</th>
                             <th class="border px-4 py-2">Selesai</th>
+                            <th class="border px-4 py-2">Durasi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,6 +32,7 @@
                                 <td class="border px-4 py-2">{{ $pkl->industri?->nama ?? '-' }}</td>
                                 <td class="border px-4 py-2">{{ $pkl->mulai->format('d-m-Y') }}</td>
                                 <td class="border px-4 py-2">{{ $pkl->selesai->format('d-m-Y') }}</td>
+                                <td class="border px-4 py-2">{{ $pkl->mulai->diffInDays($pkl->selesai) }} hari</td>
                             </tr>
                         @empty
                             <tr>
