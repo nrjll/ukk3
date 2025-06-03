@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Collection;
+use Filament\Notifications\Notification;
 
 class SiswaResource extends Resource
 {
@@ -67,9 +69,8 @@ class SiswaResource extends Resource
                     ->required()
                     ->maxLength(30),
                 Forms\Components\Toggle::make('status_lapor_pkl')
-                    ->required(),
-                
-                    
+                    ->required()
+                    ->disabled(),
             ]);
     }
 
@@ -113,9 +114,44 @@ class SiswaResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
             ])
+            
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(function (Collection $records) {
+                            $cannotDelete = [];
+                            $canDelete = [];
+                            
+                            foreach ($records as $record) {
+                                if ($record->status_lapor_pkl || $record->pkls()->exists()) {
+                                    $cannotDelete[] = $record->nama;
+                                } else {
+                                    $canDelete[] = $record;
+                                }
+                            }
+                            
+                            // Delete yang bisa dihapus
+                            if (count($canDelete) > 0) {
+                                foreach ($canDelete as $record) {
+                                    $record->delete();
+                                }
+                                
+                                Notification::make()
+                                    ->title('Berhasil menghapus ' . count($canDelete) . ' siswa')
+                                    ->success()
+                                    ->send();
+                            }
+                            
+                            // Notifikasi untuk yang tidak bisa dihapus
+                            if (count($cannotDelete) > 0) {
+                                Notification::make()
+                                    ->title('Beberapa siswa tidak dapat dihapus')
+                                    ->body('Siswa berikut memiliki data PKL: ' . implode(', ', $cannotDelete))
+                                    ->warning()
+                                    ->send();
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }

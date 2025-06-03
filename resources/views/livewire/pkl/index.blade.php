@@ -8,9 +8,26 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow sm:rounded-lg p-6">
                 <h3 class="text-lg font-bold mb-4">Data PKL</h3>
-                <a href="{{ route('livewire.pkl.create') }}" class="mb-4 inline-block bg-green-600 text-white px-4 py-2 rounded">
+                <!-- <a href="{{ route('livewire.pkl.create') }}" class="mb-4 inline-block bg-green-600 text-white px-4 py-2 rounded">
                     Tambah PKL
-                </a>
+                </a> -->
+                
+                @if($currentSiswa)
+                    @if($canCreatePkl)
+                        <a href="{{ route('livewire.pkl.create') }}" class="mb-4 inline-block bg-green-600 text-white px-4 py-2 rounded">
+                            Tambah PKL
+                        </a>
+                    @else
+                        <div class="mb-4 p-3 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded">
+                            <strong>Info:</strong> Anda sudah melaporkan PKL. Tidak dapat menambah laporan PKL baru.
+                        </div>
+                    @endif
+                <!-- @else
+                    <div class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                        <strong>Perhatian:</strong> Email Anda tidak terdaftar sebagai siswa. Silakan hubungi admin.
+                    </div> -->
+                @endif
+
                 <table class="table-auto w-full border border-gray-300">
                     <thead class="bg-gray-100">
                         <tr>

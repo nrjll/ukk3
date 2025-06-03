@@ -9,6 +9,7 @@ use App\Models\Industri;
 use App\Models\Siswa;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class Create extends Component
 {
@@ -16,7 +17,7 @@ class Create extends Component
 
     public $gurus = [];
     public $industris = [];
-    public $siswas = [];
+    // public $siswas = [];
 
     protected $rules = [
         'guru_id' => 'required',
@@ -30,7 +31,14 @@ class Create extends Component
     {  
         $this->gurus = Guru::all();
         $this->industris = Industri::all();
-        $this->siswas = Siswa::all();
+        // $this->siswas = Siswa::all();
+
+        $currentUser = Auth::user();
+        $siswa = Siswa::where('email', $currentUser->email)->first();
+
+        if ($siswa) {
+            $this->siswa_id = $siswa->id;
+        }
     }
 
     public function submit()
@@ -60,6 +68,13 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.pkl.create')->layout('layouts.app');
+        // return view('livewire.pkl.create')->layout('layouts.app');
+        $currentUser = Auth::user();
+        $currentSiswa = Siswa::where('email', $currentUser->email)->first();
+
+        return view('livewire.pkl.create', [
+            'siswas' => $currentSiswa ? collect([$currentSiswa]) : collect([]),
+            'currentSiswa' => $currentSiswa
+        ])->layout('layouts.app');
     }
 }

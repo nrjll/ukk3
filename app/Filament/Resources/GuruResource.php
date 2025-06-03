@@ -13,6 +13,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
+use Filament\Notifications\Notification;
 
 class GuruResource extends Resource
 {
@@ -107,7 +109,41 @@ class GuruResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(function (Collection $records) {
+                            $cannotDelete = [];
+                            $canDelete = [];
+                            
+                            foreach ($records as $record) {
+                                if ($record->status_lapor_pkl || $record->pkls()->exists()) {
+                                    $cannotDelete[] = $record->nama;
+                                } else {
+                                    $canDelete[] = $record;
+                                }
+                            }
+                            
+                            // Delete yang bisa dihapus
+                            if (count($canDelete) > 0) {
+                                foreach ($canDelete as $record) {
+                                    $record->delete();
+                                }
+                                
+                                Notification::make()
+                                    ->title('Berhasil menghapus ' . count($canDelete) . ' guru')
+                                    ->success()
+                                    ->send();
+                            }
+                            
+                            // Notifikasi untuk yang tidak bisa dihapus
+                            if (count($cannotDelete) > 0) {
+                                Notification::make()
+                                    ->title('Beberapa guru tidak dapat dihapus')
+                                    ->body('Guru berikut memiliki data PKL: ' . implode(', ', $cannotDelete))
+                                    ->warning()
+                                    ->send();
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
