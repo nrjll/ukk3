@@ -34,7 +34,15 @@ class GuruResource extends Resource
                     ->maxLength(50),
                 Forms\Components\TextInput::make('nip')
                     ->required()
-                    ->maxLength(18),
+                    ->maxLength(18)
+                    ->unique(
+                        table: 'gurus',
+                        column: 'nip',
+                        ignoreRecord: true,
+                    )
+                    ->validationMessages([
+                        'unique' => 'NIP ini sudah digunkan!.',
+                    ]),
                 Forms\Components\Select::make('gender')
                     ->label('Gender')
                     ->options([
@@ -68,7 +76,15 @@ class GuruResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
-                    ->maxLength(30),
+                    ->maxLength(30)
+                    ->unique(
+                        table: 'gurus',
+                        column: 'email',
+                        ignoreRecord: true,
+                    )
+                    ->validationMessages([
+                        'unique' => 'Email ini sudah digunkan!.',
+                    ]),
             ]);
     }
 
@@ -84,7 +100,9 @@ class GuruResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('gender')
                     ->label('Gender')
-                    ->formatStateUsing(fn ($state) => $state === 'L' ? 'L' : 'P'),
+                    ->formatStateUsing(function ($record) {
+                        return $record->getFormattedGender();
+                    }),
                 Tables\Columns\TextColumn::make('kontak')
                     ->label('Kontak')
                     ->searchable(),

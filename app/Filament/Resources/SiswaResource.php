@@ -24,7 +24,7 @@ class SiswaResource extends Resource
     protected static ?string $navigationLabel = 'Data Siswa';
 
 
-    public static function form(Form $form): Form
+public static function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -33,7 +33,15 @@ class SiswaResource extends Resource
                     ->maxLength(50),
                 Forms\Components\TextInput::make('nis')
                     ->required()
-                    ->maxLength(5),
+                    ->maxLength(5)
+                    ->unique(
+                        table: 'siswas',
+                        column: 'nis',
+                        ignoreRecord: true
+                    )
+                    ->validationMessages([
+                        'unique' => 'NIS ini sudah digunkan!.',
+                    ]),
                 Forms\Components\Select::make('gender')
                     ->label('Jenis Kelamin')
                     ->options([
@@ -67,7 +75,15 @@ class SiswaResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
-                    ->maxLength(30),
+                    ->maxLength(30)
+                    ->unique(
+                        table: 'siswas',
+                        column: 'email',
+                        ignoreRecord: true
+                    )
+                    ->validationMessages([
+                        'unique' => 'Email telah digunakan, gunakan email lain!',
+                    ]),
                 Forms\Components\Toggle::make('status_lapor_pkl')
                     ->required()
                     ->disabled(),
@@ -86,7 +102,9 @@ class SiswaResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('gender')
                     ->label('Gender')
-                    ->formatStateUsing(fn ($state) => $state === 'L' ? 'L' : 'P'),
+                    ->formatStateUsing(function ($record) {
+                        return $record->getFormattedGender();
+                    }),
                 Tables\Columns\TextColumn::make('kontak')
                     ->label('Kontak')
                     ->searchable(),

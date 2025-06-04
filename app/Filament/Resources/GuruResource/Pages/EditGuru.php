@@ -13,7 +13,6 @@ class EditGuru extends EditRecord
 
     protected function getHeaderActions(): array
     {
-
         $actions = [];
 
         if (!$this->record->status_lapor_pkl && !$this->record->pkls()->exists()) {
